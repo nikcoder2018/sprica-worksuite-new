@@ -30,6 +30,7 @@ class UpdateTimeLog extends CoreRequest
             'memo' => 'required',
             'task_id' => 'required',
             'user_id' => 'required',
+            'code_id' => 'required'
         ];
         return $rules;
     }

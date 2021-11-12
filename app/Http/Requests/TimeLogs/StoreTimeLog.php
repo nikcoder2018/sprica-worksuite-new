@@ -30,6 +30,7 @@ class StoreTimeLog extends CoreRequest
             'memo' => 'required',
             'task_id' => 'required',
             'user_id' => 'required',
+            'code_id' => 'required'
         ];
         return $rules;
     }
@@ -40,6 +41,7 @@ class StoreTimeLog extends CoreRequest
             'project_id.required' => __('messages.chooseProject'),
             'task_id.required' => __('messages.fieldBlank'),
             'user_id.required' => __('messages.fieldBlank'),
+            'code_id.required' => __('messages.fieldBlank')
         ];
     }
 

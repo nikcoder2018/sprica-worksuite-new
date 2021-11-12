@@ -94,7 +94,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <x-forms.select fieldId="code_id" fieldName="code_id"
+                        <x-forms.select fieldId="code_id" fieldName="code_id" fieldRequired="true"
                             :fieldLabel="__('modules.codes.name')" search="true">
                             <option value="">--</option>
                             @foreach ($codes as $code)

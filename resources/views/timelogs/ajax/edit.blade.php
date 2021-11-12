@@ -106,7 +106,19 @@
                             :fieldPlaceholder="__('placeholders.timelog.memo')" />
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-3">
+                        <x-forms.select fieldId="code_id" fieldName="code_id" fieldRequired="true" :fieldValue="$timeLog->code_id"
+                            :fieldLabel="__('modules.codes.name')" search="true">
+                            <option value="">--</option>
+                            @foreach ($codes as $code)
+                                <option value="{{ $code->id }}" @if ($code->id == $timeLog->code_id) selected @endif>
+                                    {{ $code->title }}
+                                </option>
+                            @endforeach
+                        </x-forms.select>
+                    </div>
+
+                    <div class="col-md-3">
                         <x-forms.label fieldId="total_time" class="my-3"
                             :fieldLabel="__('modules.timeLogs.totalHours')" />
                         <p id="total_time" class="f-w-500 text-primary f-21">{{ $timeLog->hours }}</p>

@@ -200,7 +200,8 @@ class TimelogController extends AccountBaseController
         }
 
         $this->projects = Project::allProjects();
-
+        $this->codes = Code::all();
+        
         if (request()->ajax()) {
             $html = view('timelogs.ajax.edit', $this->data)->render();
             return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
