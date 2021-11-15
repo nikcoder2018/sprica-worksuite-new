@@ -84,6 +84,7 @@ class Attendance extends BaseModel
             ->join('roles', 'roles.id', '=', 'role_user.role_id')
             ->leftJoin('employee_details', 'employee_details.user_id', '=', 'users.id')
             ->leftJoin('designations', 'designations.id', '=', 'employee_details.designation_id')
+            ->leftJoin('codes', 'code.id', '=', 'attendances.code_id')
             ->where('roles.name', '<>', 'client')
             ->select(
                 DB::raw("( select count('atd.id') from attendances as atd where atd.user_id = users.id and DATE(atd.clock_in_time)  =  '" . $date . "' and DATE(atd.clock_out_time)  =  '" . $date . "' ) as total_clock_in"),
@@ -96,6 +97,8 @@ class Attendance extends BaseModel
                 'attendances.late',
                 'attendances.half_day',
                 'attendances.working_from',
+                'codes.money_1',
+                'codes.money_2',
                 'designations.name as designation_name',
                 'users.image',
                 DB::raw('@attendance_date as atte_date'),
@@ -204,11 +207,12 @@ class Attendance extends BaseModel
     public static function userAttendanceByDate($startDate, $endDate, $userId)
     {
         return Attendance::join('users', 'users.id', '=', 'attendances.user_id')
+            ->leftJoin('codes', 'codes.id', 'attendances.code_id')
             ->where(DB::raw('DATE(attendances.clock_in_time)'), '>=', $startDate)
             ->where(DB::raw('DATE(attendances.clock_in_time)'), '<=', $endDate)
             ->where('attendances.user_id', '=', $userId)
             ->orderBy('attendances.id', 'desc')
-            ->select('attendances.*', 'users.*', 'attendances.id as aId')
+            ->select('attendances.*', 'users.*','codes.*', 'attendances.id as aId')
             ->get();
     }
 

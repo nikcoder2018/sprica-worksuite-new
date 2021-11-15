@@ -31,6 +31,7 @@ class StoreBulkAttendance extends CoreRequest
             'year' => 'required',
             'month' => 'required',
             'user_id.0' => 'required',
+            'code_id' => 'required'
         ];
     }
 

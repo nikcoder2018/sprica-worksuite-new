@@ -219,6 +219,7 @@ return array (
     'gdprSettings' => 'GDPR Settings',
     'removalRequest' => 'Removal Request (Customer)',
     'removalRequestLead' => 'Removal Request (Lead)',
+    'breakHours' => 'Break Hours'
   ),
   'language' => 'Language',
   'delete' => 'Delete',

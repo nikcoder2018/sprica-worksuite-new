@@ -42,9 +42,13 @@
                     @endforeach
                 </x-table>
             </td>
+            <td></td>
+            <td>{{ $attendance->money_1}}</td>
+            <td>{{ $attendance->money_2}}</td>
             <td>
                 {{ $attendance->totalTime($attendance->clock_in_time, $attendance->clock_in_time, $attendance->user_id) }}
             </td>
+            
             <td class="text-right pb-2">
                 <x-forms.button-secondary icon="search" class="view-attendance"
                     data-attendance-id="{{ $attendance->aId }}">

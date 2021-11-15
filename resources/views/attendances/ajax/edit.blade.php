@@ -80,6 +80,18 @@ $manageAttendancePermission = user()->permission('manage_attendance');
                                     fieldId="halfday" />
                             </div>
                         @endif
+                        
+                        <div class="col-lg-3 col-md-4">
+                            <x-forms.select fieldId="code_id" fieldName="code_id" fieldRequired="true"
+                                :fieldLabel="__('modules.codes.name')" :fieldValue="$row->code_id" search="true">
+                                <option value="">--</option>
+                                @foreach ($codes as $code)
+                                    <option value="{{ $code->id }}">
+                                        {{ $code->title }}
+                                    </option>
+                                @endforeach
+                            </x-forms.select>
+                        </div>
 
                         <div class="col-lg-3 col-md-6">
                             <x-forms.text :fieldLabel="__('modules.attendance.working_from')"

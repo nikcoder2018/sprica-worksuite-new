@@ -155,6 +155,9 @@ $addAttendancePermission = user()->permission('add_attendance');
                                 <th>@lang('app.status')</th>
                                 <th>@lang('modules.attendance.clock_in')</th>
                                 <th>@lang('modules.attendance.clock_out')</th>
+                                <th>@lang('modules.attendance.break')</th>
+                                <th>@lang('modules.attendance.money1')</th>
+                                <th>@lang('modules.attendance.money2')</th>
                                 <th>@lang('app.total')</th>
                                 <th class="text-right">@lang('app.others')</th>
                             </tr>

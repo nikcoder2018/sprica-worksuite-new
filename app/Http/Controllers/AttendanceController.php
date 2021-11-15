@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helper\Reply;
 use App\Http\Requests\Attendance\StoreAttendance;
 use App\Http\Requests\Attendance\StoreBulkAttendance;
+use App\Models\Code;
 use App\Models\Attendance;
 use App\Models\Holiday;
 use App\Models\Leave;
@@ -248,6 +249,7 @@ class AttendanceController extends AccountBaseController
         $this->type = 'edit';
 
         $this->maxAttendanceInDay = attendance_setting()->clockin_in_day;
+        $this->codes = Code::all();
         return view('attendances.ajax.edit', $this->data);
     }
 
@@ -281,6 +283,7 @@ class AttendanceController extends AccountBaseController
         $attendance->working_from = $request->working_from;
         $attendance->late = ($request->has('late')) ? 'yes' : 'no';
         $attendance->half_day = ($request->has('halfday')) ? 'yes' : 'no';
+        $attendance->code_id = $request->code_id;
         $attendance->save();
 
         return Reply::success(__('messages.attendanceSaveSuccess'));
@@ -340,7 +343,8 @@ class AttendanceController extends AccountBaseController
                 'clock_out_ip' => $request->clock_out_ip,
                 'working_from' => $request->working_from,
                 'late' => ($request->has('late')) ? 'yes' : 'no',
-                'half_day' => ($request->has('halfday')) ? 'yes' : 'no'
+                'half_day' => ($request->has('halfday')) ? 'yes' : 'no',
+                'code_id' => $request->code_id
             ]);
         }
         else {
@@ -486,6 +490,7 @@ class AttendanceController extends AccountBaseController
             }
         }
 
+        //return response()->json($dateWiseData);
         // Getting View data
         $view = view('attendances.ajax.user_attendance', ['dateWiseData' => $dateWiseData, 'global' => $this->global])->render();
 
@@ -508,6 +513,7 @@ class AttendanceController extends AccountBaseController
         $this->pageTitle = __('modules.attendance.markAttendance');
         $this->year = now()->format('Y');
         $this->month = now()->format('m');
+        $this->codes = Code::all();
 
         if (request()->ajax()) {
             $html = view('attendances.ajax.create', $this->data)->render();
@@ -585,7 +591,8 @@ class AttendanceController extends AccountBaseController
                             'late' => $request->late,
                             'half_day' => $request->halfday,
                             'added_by' => user()->id,
-                            'last_updated_by' => user()->id
+                            'last_updated_by' => user()->id,
+                            'code_id' => $request->code_id
                         ];
                     }
                 }
