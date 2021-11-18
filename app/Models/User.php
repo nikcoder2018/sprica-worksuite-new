@@ -271,6 +271,11 @@ class User extends BaseModel implements AuthenticatableContract, AuthorizableCon
         return $this->hasMany(Project::class, 'client_id');
     }
 
+    public function timelogs()
+    {
+        return $this->hasMany(ProjectTimeLog::class, 'user_id');
+    }
+
     public function member()
     {
         return $this->hasMany(ProjectMember::class, 'user_id');

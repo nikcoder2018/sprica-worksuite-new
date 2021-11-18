@@ -52,19 +52,19 @@ class AttendanceController extends AccountBaseController
     public function summaryData($request)
     {
         $employees = User::with(
-            ['attendance' => function ($query) use ($request) {
-                $query->whereRaw('MONTH(attendances.clock_in_time) = ?', [$request->month])
-                    ->whereRaw('YEAR(attendances.clock_in_time) = ?', [$request->year]);
+            ['timelogs' => function ($query) use ($request) {
+                $query->whereRaw('MONTH(project_time_logs.start_time) = ?', [$request->month])
+                    ->whereRaw('YEAR(project_time_logs.start_time) = ?', [$request->year]);
 
-                if ($request->late != 'all') {
-                    $query = $query->where('attendances.late', $request->late);
-                }
+                // if ($request->late != 'all') {
+                //     $query = $query->where('attendances.late', $request->late);
+                // }
 
                 if ($this->viewAttendancePermission == 'added') {
-                    $query = $query->where('attendances.added_by', user()->id);
+                    $query = $query->where('project_time_logs.added_by', user()->id);
 
                 } elseif ($this->viewAttendancePermission == 'owned') {
-                    $query = $query->where('attendances.user_id', user()->id);
+                    $query = $query->where('project_time_logs.user_id', user()->id);
                 }
             },
             'leaves' => function ($query) use ($request) {
@@ -91,6 +91,8 @@ class AttendanceController extends AccountBaseController
 
         $employees = $employees->get();
 
+        //print_r($employees); exit;
+        
         $this->holidays = Holiday::whereRaw('MONTH(holidays.date) = ?', [$request->month])->whereRaw('YEAR(holidays.date) = ?', [$request->year])->get();
 
         $final = [];
@@ -113,8 +115,8 @@ class AttendanceController extends AccountBaseController
 
             $final[$employee->id . '#' . $employee->name] = array_replace($dataTillToday, $dataFromTomorrow);
 
-            foreach ($employee->attendance as $attendance) {
-                $final[$employee->id . '#' . $employee->name][Carbon::parse($attendance->clock_in_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $attendance->id . '"><i class="fa fa-check text-primary"></i></a>';
+            foreach ($employee->timelogs as $timelog) {
+                $final[$employee->id . '#' . $employee->name][Carbon::parse($timelog->start_time)->timezone($this->global->timezone)->day] = '<a href="javascript:;" class="view-attendance" data-attendance-id="' . $timelog->id . '"><i class="fa fa-check text-primary"></i></a>';
             }
 
             $emplolyeeName = view('components.employee', [
