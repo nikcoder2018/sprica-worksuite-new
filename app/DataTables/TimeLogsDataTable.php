@@ -116,6 +116,15 @@ class TimeLogsDataTable extends BaseDataTable
                     return "<span class='badge badge-primary'>" . __('app.active') . '</span>';
                 }
             })
+            ->editColumn('break_hours', function ($row) {
+                $breakhour = $row->break*60;
+                $timeLog = intdiv($breakhour, 60) . ' ' . __('app.hrs') . ' ';
+
+                if (($breakhour % 60) > 0) {
+                    $timeLog .= ($breakhour % 60) . ' ' . __('app.mins');
+                }
+                return $timeLog;
+            })
             ->editColumn('total_hours', function ($row) {
                 if (is_null($row->end_time)) {
                     $endTime = Carbon::now();
@@ -199,7 +208,7 @@ class TimeLogsDataTable extends BaseDataTable
             ->leftJoin('tasks', 'tasks.id', '=', 'project_time_logs.task_id')
             ->leftJoin('projects', 'projects.id', '=', 'project_time_logs.project_id');
 
-        $model = $model->select('project_time_logs.id', 'project_time_logs.start_time', 'project_time_logs.end_time', 'project_time_logs.total_hours', 'project_time_logs.total_minutes', 'project_time_logs.memo', 'project_time_logs.user_id', 'project_time_logs.project_id', 'project_time_logs.task_id', 'users.name', 'users.image', 'project_time_logs.hourly_rate', 'project_time_logs.earnings', 'project_time_logs.approved', 'tasks.heading', 'projects.project_name', 'designations.name as designation_name', 'project_time_logs.added_by');
+        $model = $model->select('project_time_logs.id', 'project_time_logs.start_time', 'project_time_logs.end_time', 'project_time_logs.total_hours', 'project_time_logs.total_minutes', 'project_time_logs.break', 'project_time_logs.memo', 'project_time_logs.user_id', 'project_time_logs.project_id', 'project_time_logs.task_id', 'users.name', 'users.image', 'project_time_logs.hourly_rate', 'project_time_logs.earnings', 'project_time_logs.approved', 'tasks.heading', 'projects.project_name', 'designations.name as designation_name', 'project_time_logs.added_by');
 
 
         if ($request->startDate !== null && $request->startDate != 'null' && $request->startDate != '') {
@@ -340,6 +349,7 @@ class TimeLogsDataTable extends BaseDataTable
             __('app.name') => ['data' => 'employee_name', 'name' => 'name', 'visible' => false],
             __('modules.timeLogs.startTime') => ['data' => 'start_time', 'name' => 'start_time'],
             __('modules.timeLogs.endTime') => ['data' => 'end_time', 'name' => 'end_time'],
+            __('modules.timeLogs.breakHours') => ['data' => 'break_hours', 'name' => 'break_hours'],
             __('modules.timeLogs.totalHours') => ['data' => 'total_hours', 'name' => 'total_hours'],
             __('app.earnings') => ['data' => 'earnings', 'name' => 'earnings'],
             Column::computed('action', __('app.action'))

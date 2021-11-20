@@ -12,6 +12,7 @@ use App\Models\Project;
 use App\Models\ProjectTimeLog;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\BreakHoursSetting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -96,6 +97,7 @@ class TimelogController extends AccountBaseController
 
         $this->tasks = Task::timelogTasks();
         $this->codes = Code::all();
+        $this->breakhours = BreakHoursSetting::all();
 
         if (request()->ajax()) {
             $html = view('timelogs.ajax.create', $this->data)->render();
@@ -124,6 +126,7 @@ class TimelogController extends AccountBaseController
         $timeLog->task_id = $request->task_id;
         $timeLog->user_id = $request->user_id;
         $timeLog->code_id = $request->code_id;
+        $timeLog->break = $request->break_time;
         $userID = $request->user_id;
 
         $activeTimer = ProjectTimeLog::with('user')
@@ -201,7 +204,8 @@ class TimelogController extends AccountBaseController
 
         $this->projects = Project::allProjects();
         $this->codes = Code::all();
-        
+        $this->breakhours = BreakHoursSetting::all();
+
         if (request()->ajax()) {
             $html = view('timelogs.ajax.edit', $this->data)->render();
             return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
@@ -260,7 +264,7 @@ class TimelogController extends AccountBaseController
             $timeLog->end_time = $end_time->format('Y-m-d H:i:s');
             $timeLog->total_hours = (int)$end_time->diff($timeLog->start_time)->format('%d') * 24 + (int)$end_time->diff($timeLog->start_time)->format('%H');
             $timeLog->total_minutes = ((int)$timeLog->total_hours * 60) + (int)($end_time->diff($timeLog->start_time)->format('%i'));
-
+            $timeLog->break = $request->break_time;
             $timeLog->memo = $request->memo;
             $timeLog->user_id = $userID;
             $timeLog->edited_by_user = user()->id;

@@ -464,6 +464,7 @@ return array(
     'startTime' => 'Start Time',
     'endTime' => 'End Time',
     'totalHours' => 'Total Hours',
+    'breakHours' => 'Break Hours',
     'memo' => 'Memo',
     'lastUpdatedBy' => 'Last updated by',
     'employeeName' => 'Employee Name',
@@ -479,7 +480,8 @@ return array(
     'task' => 'Task',
     'whenLogged' => 'when Logged',
     'timeLogFrom' => 'Time Log From',
-    'timeLogTo' => 'Time Log To',
+    'timeLogTo' => 'Time Log To'
+    
   ),
   'taskCalendar' => array(
     'note' => 'Calendar shows the due tasks on their due dates.',
@@ -1470,5 +1472,10 @@ return array(
       'active' => 'Active',
       'inactive' => 'InActive'
     )
+  ),
+  'breakhours' => array(
+    'name' => 'Break Hours',
+    'hours' => 'Hours',
+    'break' => 'Break'
   )
 );

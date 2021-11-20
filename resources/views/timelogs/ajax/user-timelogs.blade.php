@@ -8,6 +8,7 @@ $deleteTimelogPermission = user()->permission('delete_timelogs');
             <x-slot name="thead">
                 <th>@lang('app.task')</th>
                 <th>@lang('app.time')</th>
+                <th>@lang('modules.timeLogs.breakHours')</th>
                 <th>@lang('modules.timeLogs.totalHours')</th>
                 <th>@lang('app.earnings')</th>
                 <th class="text-right">@lang('app.action')</th>
@@ -34,10 +35,14 @@ $deleteTimelogPermission = user()->permission('delete_timelogs');
                         {{ $item->end_time->timezone($global->timezone)->format($global->date_format . ' ' . $global->time_format) }}
                     </td>
                     <td>
-                        {{ intdiv($item->total_minutes, 60) . ' ' . __('app.hrs') }}
 
-                        @if ($item->total_minutes % 60 > 0)
-                            {{ $item->total_minutes % 60 . ' ' . __('app.mins') }}
+                    </td>
+                    <td>
+
+                        {{ intdiv($item->break*60, 60) . ' ' . __('app.hrs') }}
+
+                        @if (($item->break*60) % 60 > 0)
+                            {{ ($item->break*60) % 60 . ' ' . __('app.mins') }}
                         @endif
 
                     </td>

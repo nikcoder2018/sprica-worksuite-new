@@ -134,6 +134,7 @@ use App\Http\Controllers\PaypalIPNController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\TicketCustomFormController;
 use App\Http\Controllers\TwoFASettingController;
+use App\Http\Controllers\BreakHoursSettingsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -299,6 +300,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account'], function () {
         Route::resource('attendance-settings', AttendanceSettingController::class);
         Route::resource('leaves-settings', LeaveSettingController::class);
         Route::resource('code-settings', CodeSettingController::class);
+        Route::resource('breakhours-settings', BreakHoursSettingsController::class);
         // LeaveType Resource
         Route::resource('leaveType', LeaveTypeController::class);
 

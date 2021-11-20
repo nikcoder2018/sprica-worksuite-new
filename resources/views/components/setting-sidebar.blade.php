@@ -73,6 +73,11 @@
                 :href="route('code-settings.index')" :text="__('app.menu.codeSettings')" />
         @endif
 
+        @if (user()->permission('manage_break_hours_settings') == 'all')
+            <x-setting-menu-item :active="$activeMenu" menu="break_hours_settings"
+                :href="route('breakhours-settings.index')" :text="__('app.menu.breakhoursSettings')" />
+        @endif
+
         @if (user()->permission('manage_leave_setting') == 'all')
             <x-setting-menu-item :active="$activeMenu" menu="leave_settings" :href="route('leaves-settings.index')"
                 :text="__('app.menu.leaveSettings')" />

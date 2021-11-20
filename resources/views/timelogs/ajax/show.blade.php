@@ -56,7 +56,7 @@
                             </p>
                         </div>
                     @endif
-
+                    <x-cards.data-row :label="__('modules.timeLogs.breakHours')" :value="$timeLog->break.' hrs'" />
                     <x-cards.data-row :label="__('app.earnings')" :value="currency_formatter($timeLog->earnings)" />
                     <x-cards.data-row :label="__('modules.timeLogs.memo')" :value="$timeLog->memo" />
                     <x-cards.data-row :label="__('app.project')" :value="$timeLog->project->project_name ?? '--'" />

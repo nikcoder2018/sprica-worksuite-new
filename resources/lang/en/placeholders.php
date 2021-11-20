@@ -101,5 +101,9 @@ return array(
     'codes' => array(
         'number' => 'e.g 999',
         'title' => 'e.g With Overtime'
+    ),
+    'breakhours' => array(
+        'hours' => 'e.g 8',
+        'break' => 'e.g 1'
     )
 );

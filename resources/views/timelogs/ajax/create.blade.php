@@ -88,12 +88,12 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <x-forms.text :fieldLabel="__('modules.timeLogs.memo')" fieldName="memo" fieldRequired="true"
                             fieldId="memo" :fieldPlaceholder="__('placeholders.timelog.memo')" />
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <x-forms.select fieldId="code_id" fieldName="code_id" fieldRequired="true"
                             :fieldLabel="__('modules.codes.name')" search="true">
                             <option value="">--</option>
@@ -106,12 +106,18 @@
                     </div>
 
                     <div class="col-md-3">
+                        <x-forms.label fieldId="break_time" class="my-3"
+                            :fieldLabel="__('modules.timeLogs.breakHours')" />
+                        <p id="break_time" class="f-w-500 text-primary f-21">0 @lang('app.hrs')</p>
+                    </div>
+
+                    <div class="col-md-3">
                         <x-forms.label fieldId="total_time" class="my-3"
                             :fieldLabel="__('modules.timeLogs.totalHours')" />
                         <p id="total_time" class="f-w-500 text-primary f-21">0 @lang('app.hrs')</p>
                     </div>
 
-
+                    <input type="hidden" name="break_time" value="">
                 </div>
 
 
@@ -130,6 +136,7 @@
 <script>
     $(document).ready(function() {
 
+        const breakhours = $.parseJSON(htmlDecode("{{$breakhours}}"));
 
         const dp1 = datepicker('#start_date', {
             position: 'bl',
@@ -284,11 +291,28 @@
                 $('#end_date').val(mm + '/' + dd + '/' + y);
                 calculateTime();
             } else {
+                var totaltime = hours + (minutes/60);
+                $.each(breakhours, function(i, value){
+                    if(value.hours == totaltime ){
+                        var break_hours = value.break.toString().split('.');
+                        $('input[name=break_time]').val(value.break);
+                        $('#break_time').html(break_hours[0] + "Hrs " + (break_hours[1] ? (break_hours[1]*6) : 0) + "Mins");
+                    }
+                });
+
                 $('#total_time').html(hours + "Hrs " + minutes + "Mins");
             }
 
         }
 
         init(RIGHT_MODAL);
+
+        function htmlDecode(value) {
+        return $("<textarea/>").html(value).text();
+        }
+
+        function htmlEncode(value) {
+        return $('<textarea/>').text(value).html();
+        }
     });
 </script>
