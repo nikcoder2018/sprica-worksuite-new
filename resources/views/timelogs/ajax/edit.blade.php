@@ -311,15 +311,17 @@
                 calculateTime();
             } else {
                 var totaltime = hours + (minutes/60);
+                var break_hours = 0;
                 $.each(breakhours, function(i, value){
                     if(value.hours == totaltime ){
-                        var break_hours = value.break.toString().split('.');
+                        break_hours = value.break;
+                        var bh_array = value.break.toString().split('.');
                         $('input[name=break_time]').val(value.break);
-                        $('#break_time').html(break_hours[0] + "Hrs " + (break_hours[1] ? (break_hours[1]*6) : 0) + "Mins");
+                        $('#break_time').html(bh_array[0] + "Hrs " + (bh_array[1] ? (bh_array[1]*6) : 0) + "Mins");
                     }
                 });
-
-                $('#total_time').html(hours + "Hrs " + minutes + "Mins");
+                totaltime = totaltime - break_hours;
+                $('#total_time').html(Math.floor(totaltime) + "Hrs " + ((totaltime-Math.floor(totaltime)) * 6).toFixed(1) + "Mins");
             }
 
         }

@@ -151,7 +151,7 @@ class TimelogController extends AccountBaseController
         if (is_null($activeTimer)) {
             $timeLog->start_time = $startDateTime;
             $timeLog->end_time = $endDateTime;
-            $timeLog->total_hours = (int)$timeLog->end_time->diff($timeLog->start_time)->format('%d') * 24 + (int)$timeLog->end_time->diff($timeLog->start_time)->format('%H');
+            $timeLog->total_hours = ((int)$timeLog->end_time->diff($timeLog->start_time)->format('%d') * 24 + (int)$timeLog->end_time->diff($timeLog->start_time)->format('%H'))-$timeLog->break;
             $timeLog->total_minutes = ((int)$timeLog->total_hours * 60) + (int)($timeLog->end_time->diff($timeLog->start_time)->format('%i'));
             $timeLog->hourly_rate = 0;
             $timeLog->memo = $request->memo;
@@ -262,9 +262,9 @@ class TimelogController extends AccountBaseController
         if (is_null($activeTimer)) {
             $timeLog->start_time = $start_time->format('Y-m-d H:i:s');
             $timeLog->end_time = $end_time->format('Y-m-d H:i:s');
-            $timeLog->total_hours = (int)$end_time->diff($timeLog->start_time)->format('%d') * 24 + (int)$end_time->diff($timeLog->start_time)->format('%H');
-            $timeLog->total_minutes = ((int)$timeLog->total_hours * 60) + (int)($end_time->diff($timeLog->start_time)->format('%i'));
             $timeLog->break = $request->break_time;
+            $timeLog->total_hours = ((int)$timeLog->end_time->diff($timeLog->start_time)->format('%d') * 24 + (int)$timeLog->end_time->diff($timeLog->start_time)->format('%H'))-$timeLog->break;
+            $timeLog->total_minutes = ((int)$timeLog->total_hours * 60) + (int)($end_time->diff($timeLog->start_time)->format('%i'));
             $timeLog->memo = $request->memo;
             $timeLog->user_id = $userID;
             $timeLog->edited_by_user = user()->id;
