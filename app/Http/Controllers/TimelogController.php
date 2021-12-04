@@ -13,6 +13,7 @@ use App\Models\ProjectTimeLog;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\BreakHoursSetting;
+use App\Models\LogTimeFor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -98,7 +99,7 @@ class TimelogController extends AccountBaseController
         $this->tasks = Task::timelogTasks();
         $this->codes = Code::all();
         $this->breakhours = BreakHoursSetting::all();
-
+        $this->logtimefor = LogTimeFor::first();
         if (request()->ajax()) {
             $html = view('timelogs.ajax.create', $this->data)->render();
             return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);
@@ -205,7 +206,7 @@ class TimelogController extends AccountBaseController
         $this->projects = Project::allProjects();
         $this->codes = Code::all();
         $this->breakhours = BreakHoursSetting::all();
-
+        $this->logtimefor = LogTimeFor::first();
         if (request()->ajax()) {
             $html = view('timelogs.ajax.edit', $this->data)->render();
             return Reply::dataOnly(['status' => 'success', 'html' => $html, 'title' => $this->pageTitle]);

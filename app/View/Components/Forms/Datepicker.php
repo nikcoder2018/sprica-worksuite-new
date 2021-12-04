@@ -13,6 +13,7 @@ class Datepicker extends Component
     public $fieldName;
     public $fieldId;
     public $fieldHelp;
+    public $fieldReadOnly;
     public $custom;
 
     /**
@@ -20,7 +21,7 @@ class Datepicker extends Component
      *
      * @return void
      */
-    public function __construct($fieldLabel, $fieldRequired = false, $fieldPlaceholder, $fieldValue = null, $fieldName, $fieldId, $fieldHelp = null, $custom = false)
+    public function __construct($fieldLabel, $fieldRequired = false, $fieldPlaceholder, $fieldValue = null, $fieldName, $fieldId, $fieldHelp = null, $fieldReadOnly = false, $custom = false)
     {
         $this->fieldLabel = $fieldLabel;
         $this->fieldRequired = $fieldRequired;
@@ -29,6 +30,7 @@ class Datepicker extends Component
         $this->fieldName = $fieldName;
         $this->fieldId = $fieldId;
         $this->fieldHelp = $fieldHelp;
+        $this->fieldReadOnly = $fieldReadOnly;
         $this->custom = $custom; // If used in custom fields
     }
 

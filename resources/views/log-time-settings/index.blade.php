@@ -28,6 +28,17 @@
                                 fieldName="approval_required" fieldId="approval_required" fieldValue="true"
                                 :checked="$logTime->approval_required" />
                         </div>
+                        <div class="col-lg-6 mb-2">
+                            <x-forms.select fieldId="log_time_mode" :fieldLabel="__('Log Time Mode')"
+                                fieldName="log_time_mode">
+                                <option value="manual" @if ($logTime->log_time_mode == 'manual') selected @endif>
+                                    {{ __('Manual')}}
+                                </option>
+                                <option value="auto" @if ($logTime->log_time_mode == 'auto') selected @endif>
+                                    {{ __('Auto')}}
+                                </option>
+                            </x-forms.select>
+                        </div>
                     </div>
                 </x-form>
             </div>
@@ -69,5 +80,18 @@
                 }
             })
         });
+
+        $('#log_time_mode').change(function() {
+            $.easyAjax({
+                url: "{{ route('timelog-settings.store') }}",
+                type: "POST",
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'log_time_mode': $(this).val()
+                }
+            })
+        });
+
+        
     </script>
 @endpush

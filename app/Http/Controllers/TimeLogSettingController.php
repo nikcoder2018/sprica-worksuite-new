@@ -50,6 +50,10 @@ class TimeLogSettingController extends AccountBaseController
             $logTime->approval_required = $request->approval_required;
         }
 
+        if ($request->has('log_time_mode')) {
+            $logTime->log_time_mode = $request->log_time_mode;
+        }
+
         $logTime->save();
         session()->forget('time_log_setting');
 

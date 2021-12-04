@@ -65,39 +65,79 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-3 col-lg-3">
-                                <x-forms.datepicker fieldId="start_date" fieldRequired="true"
-                                    :fieldLabel="__('modules.timeLogs.startDate')" fieldName="start_date"
-                                    :fieldValue="$timeLog->start_time->timezone($global->timezone)->format($global->date_format)"
-                                    :fieldPlaceholder="__('placeholders.date')" />
-                            </div>
-
-                            <div class="col-md-3 col-lg-3">
-                                <div class="bootstrap-timepicker timepicker">
-                                    <x-forms.text :fieldLabel="__('modules.timeLogs.startTime')"
-                                        :fieldPlaceholder="__('placeholders.hours')" fieldName="start_time"
-                                        fieldId="start_time" fieldRequired="true"
-                                        :fieldValue="$timeLog->start_time->timezone($global->timezone)->format($global->time_format)" />
+                            @if($logtimefor->log_time_mode == 'manual')
+                                <div class="col-md-3 col-lg-3">
+                                    <x-forms.datepicker fieldId="start_date" fieldRequired="true"
+                                        :fieldLabel="__('modules.timeLogs.startDate')" fieldName="start_date"
+                                        :fieldValue="$timeLog->start_time->timezone($global->timezone)->format($global->date_format)"
+                                        :fieldPlaceholder="__('placeholders.date')" />
                                 </div>
-                            </div>
 
-                            <div class="col-md-3 col-lg-3">
-                                <x-forms.datepicker fieldId="end_date" fieldRequired="true"
-                                    :fieldLabel="__('modules.timeLogs.endDate')" fieldName="end_date"
-                                    :fieldValue="\Carbon\Carbon::now($global->timezone)->format($global->date_format)"
-                                    :fieldPlaceholder="__('placeholders.date')"
-                                    :fieldValue="$timeLog->end_time->timezone($global->timezone)->format($global->date_format)" />
-                            </div>
-
-                            <div class="col-md-3 col-lg-3">
-                                <div class="bootstrap-timepicker timepicker">
-                                    <x-forms.text :fieldLabel="__('modules.timeLogs.endTime')"
-                                        :fieldPlaceholder="__('placeholders.hours')" fieldName="end_time"
-                                        fieldId="end_time" fieldRequired="true"
-                                        :fieldValue="$timeLog->end_time->timezone($global->timezone)->format($global->time_format)" />
+                                <div class="col-md-3 col-lg-3">
+                                    <div class="bootstrap-timepicker timepicker">
+                                        <x-forms.text :fieldLabel="__('modules.timeLogs.startTime')"
+                                            :fieldPlaceholder="__('placeholders.hours')" fieldName="start_time"
+                                            fieldId="start_time" fieldRequired="true"
+                                            :fieldValue="$timeLog->start_time->timezone($global->timezone)->format($global->time_format)" />
+                                    </div>
                                 </div>
-                            </div>
+
+                                <div class="col-md-3 col-lg-3">
+                                    <x-forms.datepicker fieldId="end_date" fieldRequired="true"
+                                        :fieldLabel="__('modules.timeLogs.endDate')" fieldName="end_date"
+                                        :fieldValue="\Carbon\Carbon::now($global->timezone)->format($global->date_format)"
+                                        :fieldPlaceholder="__('placeholders.date')"
+                                        :fieldValue="$timeLog->end_time->timezone($global->timezone)->format($global->date_format)" />
+                                </div>
+
+                                <div class="col-md-3 col-lg-3">
+                                    <div class="bootstrap-timepicker timepicker">
+                                        <x-forms.text :fieldLabel="__('modules.timeLogs.endTime')"
+                                            :fieldPlaceholder="__('placeholders.hours')" fieldName="end_time"
+                                            fieldId="end_time" fieldRequired="true"
+                                            :fieldValue="$timeLog->end_time->timezone($global->timezone)->format($global->time_format)" />
+                                    </div>
+                                </div>
+                            @elseif($logtimefor->log_time_mode == 'auto')
+                                <div class="col-md-4 col-lg-3">
+                                    <x-forms.datepicker fieldId="start_date" fieldRequired="true"
+                                        :fieldLabel="__('modules.timeLogs.startDate')" fieldName="start_date"
+                                        :fieldValue="$timeLog->start_time->timezone($global->timezone)->format($global->date_format)"
+                                        :fieldPlaceholder="__('placeholders.date')" />
+                                </div>
+
+                                <div class="col-md-4 col-lg-3">
+                                    <div class="bootstrap-timepicker timepicker">
+                                        <x-forms.text :fieldLabel="__('modules.timeLogs.startTime')"
+                                            :fieldPlaceholder="__('placeholders.hours')" fieldName="start_time"
+                                            fieldId="start_time" fieldRequired="true"
+                                            :fieldValue="$timeLog->start_time->timezone($global->timezone)->format($global->time_format)" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <x-forms.text :fieldLabel="__('modules.timeLogs.Hours')" fieldName="memo" fieldRequired="true"
+                                        fieldId="hours" :fieldPlaceholder="__('placeholders.timelog.Hours')" />
+                                </div>
+                                
+                                <div class="col-md-4 col-lg-3">
+                                    <x-forms.datepicker fieldId="end_date" fieldRequired="true"
+                                        :fieldLabel="__('modules.timeLogs.endDate')" fieldName="end_date"
+                                        :fieldValue="$timeLog->end_time->timezone($global->timezone)->format($global->date_format)"
+                                        :fieldPlaceholder="__('placeholders.date')" fieldReadOnly="true"/>
+                                </div>
+                                
+                                <div class="col-md-4 col-lg-3">
+                                    <div class="bootstrap-timepicker timepicker">
+                                        <x-forms.text :fieldLabel="__('modules.timeLogs.endTime')"
+                                            :fieldPlaceholder="__('placeholders.hours')" fieldName="end_time"
+                                            :fieldValue="$timeLog->end_time->timezone($global->timezone)->format($global->time_format)" 
+                                            fieldId="end_time" fieldRequired="true" fieldReadOnly="true"/>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
+
                     </div>
 
                     <div class="col-md-8">
@@ -253,6 +293,25 @@
                     }
                 }
             });
+        });
+
+        $('#hours').on('keyup', function(){
+            var format = '{{ $global->moment_format }}';
+            var hours = $(this).val();
+            var startDate = $('#start_date').val();
+            var startTime = $("#start_time").val();
+
+            startDate = moment(startDate, format).format('YYYY-MM-DD');
+
+            var timeStart = new Date(startDate + " " + startTime);
+
+            var endDate = moment(timeStart,format).add(hours,'hours').format('DD-MM-YYYY');
+            var endTime = moment(timeStart,format).add(hours,'hours').format('hh:mm A');
+
+            $('#end_date').val(endDate);
+            $("#end_time").val(endTime);
+
+            calculateTime();
         });
 
         function calculateTime() {
