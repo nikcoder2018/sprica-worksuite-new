@@ -281,7 +281,7 @@
 
             var timeStart = new Date(startDate + " " + startTime);
 
-            var endDate = moment(timeStart,format).add(hours,'hours').format('DD-MM-YYYY');
+            var endDate = moment(timeStart,format).add(hours,'hours').format(format);
             var endTime = moment(timeStart,format).add(hours,'hours').format('hh:mm A');
 
             $('#end_date').val(endDate);
