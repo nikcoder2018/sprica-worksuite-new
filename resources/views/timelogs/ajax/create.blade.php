@@ -273,6 +273,16 @@
 
         $('#hours').on('keyup', function(){
             var format = '{{ $global->moment_format }}';
+            var time_format = '{{ $global->time_format }}';
+
+            if(time_format == 'H:i'){
+                time_format = 'hh:mm';
+            }else if(time_format == 'h:i A'){
+                time_format = 'hh:mm A';
+            }else if(time_format == 'h:i a'){
+                time_format = 'hh:mm a';
+            }
+            
             var hours = $(this).val();
             var startDate = $('#start_date').val();
             var startTime = $("#start_time").val();
@@ -282,7 +292,7 @@
             var timeStart = new Date(startDate + " " + startTime);
 
             var endDate = moment(timeStart,format).add(hours,'hours').format(format);
-            var endTime = moment(timeStart,format).add(hours,'hours').format('hh:mm A');
+            var endTime = moment(timeStart,format).add(hours,'hours').format(time_format);
 
             $('#end_date').val(endDate);
             $("#end_time").val(endTime);
